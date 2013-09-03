@@ -59,8 +59,8 @@ QGroupBox::title {
    <widget class="QPushButton" name="btnSend">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>440</y>
+      <x>380</x>
+      <y>410</y>
       <width>85</width>
       <height>27</height>
      </rect>
@@ -270,6 +270,9 @@ QGroupBox::title {
      </item>
      <item row="11" column="1">
       <widget class="QLineEdit" name="ledParControlInput">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="text">
         <string>2</string>
        </property>
@@ -324,6 +327,9 @@ QGroupBox::title {
      </item>
      <item row="7" column="1">
       <widget class="QLineEdit" name="ledCoincLevelInput">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="text">
         <string>1</string>
        </property>
@@ -348,6 +354,9 @@ QGroupBox::title {
      </item>
      <item row="12" column="1">
       <widget class="QLineEdit" name="ledNoOfModulesInput">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="text">
         <string>1</string>
        </property>
@@ -1566,14 +1575,14 @@ QGroupBox::title {
    <widget class="QPushButton" name="btnShowParameter">
     <property name="geometry">
      <rect>
-      <x>100</x>
+      <x>20</x>
       <y>410</y>
-      <width>85</width>
+      <width>161</width>
       <height>27</height>
      </rect>
     </property>
     <property name="text">
-     <string>PushButton</string>
+     <string>Send Parameters</string>
     </property>
    </widget>
    <widget class="QGroupBox" name="groupBox">
@@ -1682,8 +1691,8 @@ QGroupBox::title {
    <widget class="QLabel" name="labOutput">
     <property name="geometry">
      <rect>
-      <x>210</x>
-      <y>470</y>
+      <x>380</x>
+      <y>460</y>
       <width>131</width>
       <height>31</height>
      </rect>
@@ -1693,15 +1702,17 @@ QGroupBox::title {
     </property>
    </widget>
   </widget>
-  <widget class="QToolBar" name="mainToolBar">
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
-  </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>883</width>
+     <height>25</height>
+    </rect>
+   </property>
+  </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

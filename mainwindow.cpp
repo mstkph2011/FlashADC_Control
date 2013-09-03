@@ -24,12 +24,14 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	connect(ui->ledIP,SIGNAL(editingFinished()),this, SLOT(SetIP()));
 	connect(ui->ledPort,SIGNAL(editingFinished()),this, SLOT(SetPort()));
-	//connect(ui->btnSetIP,SIGNAL(clicked()), this, SLOT(SetIPAndPort()));					// no longer needed
+	//connect(ui->btnSetIP,SIGNAL(clicked()), this, SLOT(SetIPAndPort()));					// no longerx^ needed
 	connect(ui->btnSetIPServer,SIGNAL(clicked()), this, SLOT(SetIPAndPortServer()));
 	//client stuff
 
 	connect(ui->btnReceive, SIGNAL(clicked()), Client, SLOT(ReceiveData()));
-	connect(Client, SIGNAL(NewDataAvailable()), this, SLOT(ShowClientData()));
+	connect(Client, SIGNAL(NewDataAvailable()), this, SLOT(ShowClientData()));			// pring data received from server
+	connect(Client, SIGNAL(NewParameterAvailable()),this, SLOT(ShowOutput()));			// print new parameters in labels, after received from server
+
 	connect(Client, SIGNAL(ClientConnected()), this, SLOT(Connected()));
 	connect(Client, SIGNAL(ClientConnectionError(QString)),this, SLOT(SetErrorStatus(QString)));
 
@@ -40,7 +42,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(Server, SIGNAL(ServerClosed()), this, SLOT(ServerClosed()));
 	connect(ui->btnShowParameter,SIGNAL(clicked()),this, SLOT(Makeoutput()));
 
-	connect(Client, SIGNAL(NewParameterAvailable()),this, SLOT(ShowOutput()));
+
 
 }
 
