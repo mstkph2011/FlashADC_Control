@@ -59,7 +59,7 @@ private:
 	quint8 ena_trig[8];
 
 public slots:
-	void								Send();
+
 	void								Connect();										//connect to server
 	void								Disconnect();									//disconnect from server
 	void								Connected();									//is called when successfully connected
@@ -67,19 +67,23 @@ public slots:
 
 	void								SetIP();											// set IP for client to connect to
 	void								SetPort();										// set Port for client to connect to
-	//void								SetIPAndPort();			// no longer needed
-	void								SetIPAndPortServer();
-	void								StartServer();
-	void								ShutdownServer();
-	void								ShowClientData();
-	void								ShowServerData();
-	void								ServerClosed();
+
+
 
 	void								ShowOutput();
 
 
 
-	void								Makeoutput();
+	void								ComposeAndSendParameters();
+
+	//server stuff
+	void								EnableServerControls(int state);
+	void								StartServer();
+	void								ShutdownServer();
+	void								SetIPServer();											// set IP for server to listen
+	void								SetPortServer();										// set Port for server to listen
+
+
 };
 
 #endif // MAINWINDOW_H

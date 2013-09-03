@@ -18,32 +18,36 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->ledCoincLevelInput->setInputMask("9");
 	SetParameter();
 	Client = new TCP_client(ui->ledIP->text(),ui->ledPort->text().toInt());
-	Server = new TCP_server(ui->ledIP->text(),ui->ledPort->text().toInt());
-	connect(ui->btnConnect, SIGNAL(clicked()), this, SLOT(Connect()));
-	connect(ui->btnDisconnect,SIGNAL(clicked()), this, SLOT(Disconnect()));
-	connect(ui->btnSend, SIGNAL(clicked()), this, SLOT(Send()));
+	Server = new TCP_server(ui->ledIPServer->text(),ui->ledPortServer->text().toInt());
 
-	connect(ui->ledIP,SIGNAL(editingFinished()),this, SLOT(SetIP()));
-	connect(ui->ledPort,SIGNAL(editingFinished()),this, SLOT(SetPort()));
-	//connect(ui->btnSetIP,SIGNAL(clicked()), this, SLOT(SetIPAndPort()));					// no longerx^ needed
-	connect(ui->btnSetIPServer,SIGNAL(clicked()), this, SLOT(SetIPAndPortServer()));
+
 	//client stuff
-
-	connect(ui->btnReceive, SIGNAL(clicked()), Client, SLOT(ReceiveData()));
-	connect(Client, SIGNAL(NewDataAvailable()), this, SLOT(ShowClientData()));			// pring data received from server
-	connect(Client, SIGNAL(NewParameterAvailable()),this, SLOT(ShowOutput()));			// print new parameters in labels, after received from server
-
+		// connect/disconnect buttons
+	connect(ui->btnConnect, SIGNAL(clicked()), this, SLOT(Connect()));								// connect client
+	connect(ui->btnDisconnect,SIGNAL(clicked()), this, SLOT(Disconnect()));						// disconnect client
+		// connect/disconnect/error status messages
 	connect(Client, SIGNAL(ClientConnected()), this, SLOT(Connected()));
 	connect(Client, SIGNAL(ClientDisconnected()), this, SLOT(Disconnect()));
 	connect(Client, SIGNAL(ClientConnectionError(QString)),this, SLOT(SetErrorStatus(QString)));
+		//update ip/port
+	connect(ui->ledIP,SIGNAL(editingFinished()),this, SLOT(SetIP()));
+	connect(ui->ledPort,SIGNAL(editingFinished()),this, SLOT(SetPort()));
+		//send new parameters to server
+	connect(ui->btnUpdateParameter,SIGNAL(clicked()),this, SLOT(ComposeAndSendParameters()));
+		// print new parameters in labels, after received from server
+	connect(Client, SIGNAL(NewParameterAvailable()),this, SLOT(ShowOutput()));
+
 
 	//Server stuff
+
+		// enable server controls
+	connect(ui->cbEnableServer,SIGNAL(stateChanged(int)), this, SLOT(EnableServerControls(int)));
+		// start/shutdown server
 	connect(ui->btnStartServer, SIGNAL(clicked()), this, SLOT(StartServer()));
 	connect(ui->btnShutdownServer, SIGNAL(clicked()), this, SLOT(ShutdownServer()));
-	connect(Server, SIGNAL(NewDataAvailable()), this, SLOT(ShowServerData()));
-	connect(Server, SIGNAL(ServerClosed()), this, SLOT(ServerClosed()));
-	connect(ui->btnShowParameter,SIGNAL(clicked()),this, SLOT(Makeoutput()));
-
+		//update server ip/port
+	connect(ui->ledIPServer,SIGNAL(editingFinished()),this, SLOT(SetIPServer()));
+	connect(ui->ledPortServer,SIGNAL(editingFinished()),this, SLOT(SetPortServer()));
 
 
 }
@@ -53,11 +57,9 @@ MainWindow::~MainWindow()
 	delete ui;
 }
 
-void MainWindow::Send()
-{
-	Client->SendData(ComposeSendData());
-}
-void MainWindow::Connect()
+//client stuff
+
+void MainWindow::Connect()				//connect client
 {
 
 	Client->Connect();
@@ -68,67 +70,41 @@ void MainWindow::Connect()
 	statusBar()->showMessage("Connecting...");
 }
 
-/*void MainWindow::SetIPAndPort()										// no longer needed
+void MainWindow::Disconnect()			//disconnect client, also shows disconnected status
 {
-	Client->SetIP(ui->ledIP->text());
 
+	statusBar()->showMessage(Client->Disconnect());
+	ui->btnConnect->setEnabled(true);
+	ui->btnDisconnect->setEnabled(false);
+}
 
-	Client->SetPort(ui->ledPort->text().toInt());
-	char buffer[20];
-	sprintf(buffer, "%d", Client->GetPort());
-}*/
-
-void MainWindow::SetIP()
+void MainWindow::SetIP()					//set ip to connect to
 {
 	Client->SetIP(ui->ledIP->text());
 
 }
 
-void MainWindow::SetPort()
+void MainWindow::SetPort()				//set port to connect to
 {
 	Client->SetPort(ui->ledPort->text().toInt());
 }
 
-void MainWindow::SetIPAndPortServer()
+void MainWindow::Connected()			//show successfully connected status
 {
-	Server->SetIP(ui->ledIPServer->text());
-	ui->labIPServer->setText(Server->GetIPString());
+		QString status =  QString("Succesfully connected to Server on ") + Client->GetIPString() + QString(":") + QString("%1").arg(Client->GetPort());
+	statusBar()->showMessage(status);
 
-	Server->SetPort(ui->ledPortServer->text().toInt());
-	char buffer[20];
-	sprintf(buffer, "%d", Server->GetPort());
-	ui->labPortServer->setText(buffer);
 }
 
-void MainWindow::StartServer()
+void MainWindow::SetErrorStatus(QString StatusString)			//show error status
 {
-	Server->StartServer();
-}
-void MainWindow::ShutdownServer()
-{
-	if(Server)
-		Server->ShutdownServer();
-}
-
-void MainWindow::ShowClientData()
-{
-	ui->labOutput->setText(Client->GetData());
-	qDebug(Client->GetData().toUtf8().data());
-}
-
-void MainWindow::ShowServerData()
-{
-	ui->labOutputServer->setText(Server->GetData());
-}
-
-void MainWindow::ServerClosed()
-{
-	if (Client->Disconnect()==QString("Client -- Disconnected!"))
-		ui->labOutput->setText("Server closed!");
+	ui->btnConnect->setEnabled(true);
+	ui->btnDisconnect->setEnabled(false);
+	statusBar()->showMessage(StatusString);
 }
 
 
-void MainWindow::SetParameter()
+void MainWindow::SetParameter()			// get parameters from ui
 {
 	// parameters of fadc_crtl
 	par_ctrl = (qint32) ui->ledParControlInput->text().toInt();//2;
@@ -258,7 +234,57 @@ void MainWindow::SetParameter()
 
 }
 
-void MainWindow::ShowParameter()
+QByteArray MainWindow::ComposeSendData()	// compose data stream to send to the server
+{
+	quint32 DataLength = 116;
+
+	QDataStream OutData(&MessageOut, QIODevice::WriteOnly);
+	OutData.setVersion(QDataStream::Qt_4_7);
+
+	OutData << DataLength;
+	OutData << par_ctrl << no_of_modules <<  post_trigger<< coinc_level << custom_size << ov_thr_on << ext_trig_in << ext_trig_out << trace_length << sample_dec << risetime << average_win << decay_time << peaking_time << gap_time << peak_shift << thresholdctrl	<< flattop_del << decimation << peak_average;
+	for(int i = 0;i<8;i++)
+		OutData << ena_fadc[i];
+	for(int i = 0;i<8;i++)
+		OutData << offset[i];
+	for(int i = 0;i<8;i++)
+		 OutData << threshold[i];
+	for(int i = 0;i<8;i++)
+		OutData << ov_un_thresh[i];
+	for(int i = 0;i<8;i++)
+		OutData << ena_trig[i];
+	return MessageOut;
+}
+
+void MainWindow::ComposeAndSendParameters()		//get parameters from ui and send composed data stream to server
+{
+	SetParameter();
+	Client->SendData(ComposeSendData());
+}
+
+void MainWindow::ExtractReceivedData()		// decompose data values from server answer stream
+{
+	quint32 DataLength;
+	QDataStream InData(&MessageIn,QIODevice::ReadOnly);
+	InData.setVersion(QDataStream::Qt_4_7);
+		qDebug("%i",MessageIn.size());
+		if(MessageIn.size() == 120)
+				InData >> DataLength;
+	InData >> par_ctrl >> no_of_modules >>  post_trigger>> coinc_level >> custom_size >> ov_thr_on >> ext_trig_in >> ext_trig_out >> trace_length >> sample_dec >> risetime >> average_win >> decay_time >> peaking_time >> gap_time >> peak_shift >> thresholdctrl	>> flattop_del >> decimation >> peak_average;
+	for(int i = 0;i<8;i++)
+		InData >> ena_fadc[i];
+	for(int i = 0;i<8;i++)
+		InData >> offset[i];
+	for(int i = 0;i<8;i++)
+		 InData >> threshold[i];
+	for(int i = 0;i<8;i++)
+		InData >> ov_un_thresh[i];
+	for(int i = 0;i<8;i++)
+		InData >> ena_trig[i];
+
+}
+
+void MainWindow::ShowParameter()					// put parameters to ui
 {
 	ui->ledParControlOutput->setText(QString("%1").arg(par_ctrl));
 	ui->ledNoOfModulesoutput->setText(QString("%1").arg(no_of_modules));
@@ -317,88 +343,52 @@ void MainWindow::ShowParameter()
 
 }
 
-void MainWindow::Makeoutput()
-{
-	SetParameter();
-	//ShowParameter();
-	//ComposeSendData();
-	Client->SendData(ComposeSendData());
-	//QThread::msleep(2000);
-	//MessageIn = Client->GetDataArray();
-	//qDebug("%i",MessageIn.size());
-	//ExtractReceivedData();
-	//ShowParameter();
-}
-
-void MainWindow::ShowOutput()
+void MainWindow::ShowOutput()							// get parameters from server answer and put them to ui
 {
 	MessageIn = Client->GetDataArray();
 	ExtractReceivedData();
 	ShowParameter();
 }
 
-QByteArray MainWindow::ComposeSendData()
+
+//server stuff
+void MainWindow::EnableServerControls(int state)			// enable/disable server controls in ui
 {
-	quint32 DataLength = 116;
-
-	QDataStream OutData(&MessageOut, QIODevice::WriteOnly);
-	OutData.setVersion(QDataStream::Qt_4_7);
-
-	OutData << DataLength;
-	OutData << par_ctrl << no_of_modules <<  post_trigger<< coinc_level << custom_size << ov_thr_on << ext_trig_in << ext_trig_out << trace_length << sample_dec << risetime << average_win << decay_time << peaking_time << gap_time << peak_shift << thresholdctrl	<< flattop_del << decimation << peak_average;
-	for(int i = 0;i<8;i++)
-		OutData << ena_fadc[i];
-	for(int i = 0;i<8;i++)
-		OutData << offset[i];
-	for(int i = 0;i<8;i++)
-		 OutData << threshold[i];
-	for(int i = 0;i<8;i++)
-		OutData << ov_un_thresh[i];
-	for(int i = 0;i<8;i++)
-		OutData << ena_trig[i];
-	return MessageOut;
+	if (state)
+	{
+		ui->gbServer->setEnabled(true);
+		ui->ledIPServer->setEnabled(true);
+		ui->ledPortServer->setEnabled(true);
+	}
+	else
+	{
+		ui->gbServer->setEnabled(false);
+		ui->ledIPServer->setEnabled(false);
+		ui->ledPortServer->setEnabled(false);
+	}
 }
 
-void MainWindow::ExtractReceivedData()
+void MainWindow::StartServer()
 {
-	quint32 DataLength;
-	QDataStream InData(&MessageIn,QIODevice::ReadOnly);
-	InData.setVersion(QDataStream::Qt_4_7);
-    qDebug("%i",MessageIn.size());
-    if(MessageIn.size() == 120)
-        InData >> DataLength;
-	InData >> par_ctrl >> no_of_modules >>  post_trigger>> coinc_level >> custom_size >> ov_thr_on >> ext_trig_in >> ext_trig_out >> trace_length >> sample_dec >> risetime >> average_win >> decay_time >> peaking_time >> gap_time >> peak_shift >> thresholdctrl	>> flattop_del >> decimation >> peak_average;
-	for(int i = 0;i<8;i++)
-		InData >> ena_fadc[i];
-	for(int i = 0;i<8;i++)
-		InData >> offset[i];
-	for(int i = 0;i<8;i++)
-		 InData >> threshold[i];
-	for(int i = 0;i<8;i++)
-		InData >> ov_un_thresh[i];
-	for(int i = 0;i<8;i++)
-		InData >> ena_trig[i];
-
+	Server->StartServer();
+	ui->btnStartServer->setEnabled(false);
+	ui->btnShutdownServer->setEnabled(true);
 }
 
-void MainWindow::Connected()
+void MainWindow::ShutdownServer()
 {
-    QString status =  QString("Succesfully connected to Server on ") + Client->GetIPString() + QString(":") + QString("%1").arg(Client->GetPort());
-	statusBar()->showMessage(status);
-
+	if(Server)
+		Server->ShutdownServer();
+	ui->btnStartServer->setEnabled(true);
+	ui->btnShutdownServer->setEnabled(false);
 }
 
-void MainWindow::SetErrorStatus(QString StatusString)
+void MainWindow::SetIPServer()
 {
-	ui->btnConnect->setEnabled(true);
-	ui->btnDisconnect->setEnabled(false);
-	statusBar()->showMessage(StatusString);
+	Server->SetIP(ui->ledIPServer->text());
 }
 
-void MainWindow::Disconnect()
+void MainWindow::SetPortServer()
 {
-
-	statusBar()->showMessage(Client->Disconnect());
-	ui->btnConnect->setEnabled(true);
-	ui->btnDisconnect->setEnabled(false);
+	Server->SetPort(ui->ledPortServer->text().toInt());
 }

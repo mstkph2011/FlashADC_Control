@@ -59,140 +59,14 @@ QGroupBox::title {
    <widget class="QPushButton" name="btnSend">
     <property name="geometry">
      <rect>
-      <x>380</x>
-      <y>410</y>
+      <x>180</x>
+      <y>450</y>
       <width>85</width>
       <height>27</height>
      </rect>
     </property>
     <property name="text">
      <string>Send</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="btnReceive">
-    <property name="geometry">
-     <rect>
-      <x>720</x>
-      <y>570</y>
-      <width>85</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Receive</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="btnStartServer">
-    <property name="geometry">
-     <rect>
-      <x>490</x>
-      <y>530</y>
-      <width>85</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Start Server</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="labOutputServer">
-    <property name="geometry">
-     <rect>
-      <x>540</x>
-      <y>570</y>
-      <width>131</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Output Server</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="btnShutdownServer">
-    <property name="geometry">
-     <rect>
-      <x>600</x>
-      <y>530</y>
-      <width>85</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Shutdown Server</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="labPortServer">
-    <property name="geometry">
-     <rect>
-      <x>745</x>
-      <y>460</y>
-      <width>80</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Port</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="labIPServer">
-    <property name="geometry">
-     <rect>
-      <x>749</x>
-      <y>430</y>
-      <width>130</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>IP</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="ledIPServer">
-    <property name="enabled">
-     <bool>true</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>610</x>
-      <y>430</y>
-      <width>129</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>10.32.148.114</string>
-    </property>
-    <property name="placeholderText">
-     <string>Enter Client IP</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="btnSetIPServer">
-    <property name="geometry">
-     <rect>
-      <x>699</x>
-      <y>499</y>
-      <width>101</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Set IP and Port</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="ledPortServer">
-    <property name="enabled">
-     <bool>true</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>610</x>
-      <y>460</y>
-      <width>129</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>12341</string>
     </property>
    </widget>
    <widget class="QGroupBox" name="gbGlobalParameters">
@@ -1572,7 +1446,7 @@ QGroupBox::title {
      </layout>
     </widget>
    </widget>
-   <widget class="QPushButton" name="btnShowParameter">
+   <widget class="QPushButton" name="btnUpdateParameter">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -1582,7 +1456,7 @@ QGroupBox::title {
      </rect>
     </property>
     <property name="text">
-     <string>Send Parameters</string>
+     <string>Update Parameters</string>
     </property>
    </widget>
    <widget class="QGroupBox" name="groupBox">
@@ -1683,18 +1557,98 @@ QGroupBox::title {
     <zorder>ledIP</zorder>
     <zorder>btnDisconnect</zorder>
    </widget>
-   <widget class="QLabel" name="labOutput">
+   <widget class="QCheckBox" name="cbEnableServer">
     <property name="geometry">
      <rect>
-      <x>380</x>
-      <y>460</y>
-      <width>131</width>
-      <height>31</height>
+      <x>530</x>
+      <y>490</y>
+      <width>141</width>
+      <height>22</height>
      </rect>
     </property>
     <property name="text">
-     <string>Output Server</string>
+     <string>Enable Test Server</string>
     </property>
+   </widget>
+   <widget class="QGroupBox" name="gbServer">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>530</x>
+      <y>510</y>
+      <width>311</width>
+      <height>91</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Test Server</string>
+    </property>
+    <widget class="QLineEdit" name="ledPortServer">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>50</y>
+       <width>129</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>12341</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btnStartServer">
+     <property name="geometry">
+      <rect>
+       <x>180</x>
+       <y>20</y>
+       <width>111</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Start Server</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btnShutdownServer">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>180</x>
+       <y>50</y>
+       <width>111</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Shutdown Server</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="ledIPServer">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>129</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>local</string>
+     </property>
+     <property name="placeholderText">
+      <string>Enter Client IP</string>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>

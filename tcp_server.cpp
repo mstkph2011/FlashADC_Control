@@ -66,7 +66,6 @@ QString TCP_server::StartServer()
 			QString Message = QString("Server already opened on Adress %1 and Port %2. Close to open new Server!").arg(tcpServer->serverAddress().toString()).arg(tcpServer->serverPort());
 			qDebug(Message.toUtf8().data());
 			return Message;
-
 	}
 	else
 	{
