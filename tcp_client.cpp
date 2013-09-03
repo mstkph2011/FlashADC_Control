@@ -23,6 +23,7 @@ TCP_client::TCP_client(QString IP_ext, int Port_ext)
 	SetPort(Port_ext);
 	connect(tcpSocket, SIGNAL(readyRead()), this, SLOT(ReceiveDataArray()));
 	connect(tcpSocket, SIGNAL(connected()),this, SLOT(Connected()));
+	connect(tcpSocket, SIGNAL(disconnected()),this, SLOT(Disconnected()));
 	connect(tcpSocket, SIGNAL(error(QAbstractSocket::SocketError)),this, SLOT(NetworkError()));
 }
 QString TCP_client::Connect()
@@ -119,16 +120,21 @@ QString	TCP_client::Disconnect()
 	{
 		tcpSocket->disconnectFromHost();
 		qDebug("Client -- Disconnected!");
-		return QString("Client -- Disconnected!");
+		return QString("Disconnected from Server");
 	}
 	else
 	{
 		qDebug("Client -- Disconnect failed (not connected)!");
-		return QString("Client -- Disconnect failed (not connected)!");
+		return QString("Disconnected (Connection lost)");
 	}
 }
 
 QByteArray TCP_client::GetDataArray()
 {
 	return DataArray;
+}
+
+void TCP_client::Disconnected()
+{
+	emit ClientDisconnected();
 }

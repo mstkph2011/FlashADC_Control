@@ -60,7 +60,8 @@ private:
 
 public slots:
 	void								Send();
-	void								Connect();
+	void								Connect();										//connect to server
+	void								Disconnect();									//disconnect from server
 	void								Connected();									//is called when successfully connected
 	void								SetErrorStatus(QString StatusString);				// is called when not connected
 

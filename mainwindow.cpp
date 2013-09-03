@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	Client = new TCP_client(ui->ledIP->text(),ui->ledPort->text().toInt());
 	Server = new TCP_server(ui->ledIP->text(),ui->ledPort->text().toInt());
 	connect(ui->btnConnect, SIGNAL(clicked()), this, SLOT(Connect()));
+	connect(ui->btnDisconnect,SIGNAL(clicked()), this, SLOT(Disconnect()));
 	connect(ui->btnSend, SIGNAL(clicked()), this, SLOT(Send()));
 
 	connect(ui->ledIP,SIGNAL(editingFinished()),this, SLOT(SetIP()));
@@ -33,6 +34,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(Client, SIGNAL(NewParameterAvailable()),this, SLOT(ShowOutput()));			// print new parameters in labels, after received from server
 
 	connect(Client, SIGNAL(ClientConnected()), this, SLOT(Connected()));
+	connect(Client, SIGNAL(ClientDisconnected()), this, SLOT(Disconnect()));
 	connect(Client, SIGNAL(ClientConnectionError(QString)),this, SLOT(SetErrorStatus(QString)));
 
 	//Server stuff
@@ -60,33 +62,31 @@ void MainWindow::Connect()
 
 	Client->Connect();
 	Client->SetIP(ui->ledIP->text());
-	ui->labIP->setText(Client->GetIPString());
+
+	ui->btnConnect->setEnabled(false);
+	ui->btnDisconnect->setEnabled(true);
 	statusBar()->showMessage("Connecting...");
 }
 
 /*void MainWindow::SetIPAndPort()										// no longer needed
 {
 	Client->SetIP(ui->ledIP->text());
-	ui->labIP->setText(Client->GetIPString());
+
 
 	Client->SetPort(ui->ledPort->text().toInt());
 	char buffer[20];
 	sprintf(buffer, "%d", Client->GetPort());
-	ui->labPort->setText(buffer);
 }*/
 
 void MainWindow::SetIP()
 {
 	Client->SetIP(ui->ledIP->text());
-	ui->labIP->setText(Client->GetIPString());
+
 }
 
 void MainWindow::SetPort()
 {
 	Client->SetPort(ui->ledPort->text().toInt());
-	char buffer[20];
-	sprintf(buffer, "%d", Client->GetPort());
-	ui->labPort->setText(QString("%1").arg(Client->GetPort()));
 }
 
 void MainWindow::SetIPAndPortServer()
@@ -390,5 +390,15 @@ void MainWindow::Connected()
 
 void MainWindow::SetErrorStatus(QString StatusString)
 {
+	ui->btnConnect->setEnabled(true);
+	ui->btnDisconnect->setEnabled(false);
 	statusBar()->showMessage(StatusString);
+}
+
+void MainWindow::Disconnect()
+{
+
+	statusBar()->showMessage(Client->Disconnect());
+	ui->btnConnect->setEnabled(true);
+	ui->btnDisconnect->setEnabled(false);
 }

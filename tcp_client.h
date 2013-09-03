@@ -28,6 +28,7 @@ signals:
 	void							NewParameterAvailable();
 	void							ClientConnected();
 	void							ClientConnectionError(QString ErrorMessage);
+	void							ClientDisconnected();
 public slots:
 	QString						Connect();
 	void							SendData(QString Data_ext = "NoDaTa");
@@ -37,6 +38,7 @@ public slots:
 	QString						Disconnect();
 
 	void							Connected();
+	void							Disconnected();
 	void							NetworkError();
 };
 

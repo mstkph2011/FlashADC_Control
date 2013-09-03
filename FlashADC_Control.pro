@@ -16,14 +16,12 @@ SOURCES += main.cpp\
 				mainwindow.cpp \
 		tcp_server.cpp \
 		tcp_client.cpp \
-		tcp_object.cpp \
-    serverwindow.cpp
+		tcp_object.cpp
 
 HEADERS  += mainwindow.h \
 		tcp_server.h \
 		tcp_client.h \
-		tcp_object.h \
-    serverwindow.h
+		tcp_object.h
 
 FORMS    += \
 		mainwindow.ui
