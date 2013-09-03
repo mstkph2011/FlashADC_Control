@@ -63,7 +63,10 @@ public slots:
 	void								Connect();
 	void								Connected();									//is called when successfully connected
 	void								SetErrorStatus(QString StatusString);				// is called when not connected
-	void								SetIPAndPort();
+
+	void								SetIP();											// set IP for client to connect to
+	void								SetPort();										// set Port for client to connect to
+	//void								SetIPAndPort();			// no longer needed
 	void								SetIPAndPortServer();
 	void								StartServer();
 	void								ShutdownServer();

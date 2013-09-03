@@ -22,7 +22,9 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->btnConnect, SIGNAL(clicked()), this, SLOT(Connect()));
 	connect(ui->btnSend, SIGNAL(clicked()), this, SLOT(Send()));
 
-	connect(ui->btnSetIP,SIGNAL(clicked()), this, SLOT(SetIPAndPort()));
+	connect(ui->ledIP,SIGNAL(editingFinished()),this, SLOT(SetIP()));
+	connect(ui->ledPort,SIGNAL(editingFinished()),this, SLOT(SetPort()));
+	//connect(ui->btnSetIP,SIGNAL(clicked()), this, SLOT(SetIPAndPort()));					// no longer needed
 	connect(ui->btnSetIPServer,SIGNAL(clicked()), this, SLOT(SetIPAndPortServer()));
 	//client stuff
 
@@ -60,7 +62,7 @@ void MainWindow::Connect()
 	statusBar()->showMessage("Connecting...");
 }
 
-void MainWindow::SetIPAndPort()
+/*void MainWindow::SetIPAndPort()										// no longer needed
 {
 	Client->SetIP(ui->ledIP->text());
 	ui->labIP->setText(Client->GetIPString());
@@ -69,6 +71,20 @@ void MainWindow::SetIPAndPort()
 	char buffer[20];
 	sprintf(buffer, "%d", Client->GetPort());
 	ui->labPort->setText(buffer);
+}*/
+
+void MainWindow::SetIP()
+{
+	Client->SetIP(ui->ledIP->text());
+	ui->labIP->setText(Client->GetIPString());
+}
+
+void MainWindow::SetPort()
+{
+	Client->SetPort(ui->ledPort->text().toInt());
+	char buffer[20];
+	sprintf(buffer, "%d", Client->GetPort());
+	ui->labPort->setText(QString("%1").arg(Client->GetPort()));
 }
 
 void MainWindow::SetIPAndPortServer()
