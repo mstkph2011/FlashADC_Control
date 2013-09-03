@@ -365,7 +365,7 @@ void MainWindow::ExtractReceivedData()
 
 void MainWindow::Connected()
 {
-	QString status =  QString("Succesfully connected to Server on ") + Client->GetIPString() + QString(":") + QString(Client->GetPort());
+    QString status =  QString("Succesfully connected to Server on ") + Client->GetIPString() + QString(":") + QString("%1").arg(Client->GetPort());
 	statusBar()->showMessage(status);
 
 }
