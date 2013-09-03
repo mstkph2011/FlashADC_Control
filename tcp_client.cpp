@@ -32,19 +32,6 @@ QString TCP_client::Connect()
 	{
 
 		tcpSocket->connectToHost(IP, Port);
-
-		//qDebug("%i",tcpSocket->state());
-
-//		if (tcpSocket->state()==0)
-//		{
-//			qDebug("Client -- Connected!");
-//			return QString("Client -- Connected!");
-//		}
-//		else
-//		{
-//			qDebug("Client -- Connection failed (Server not found)!");
-//			return QString("Client -- Connection failed (Server not found)!");
-//		}
 		return QString("Client -- Connecting");
 	}
 	else
