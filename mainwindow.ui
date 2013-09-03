@@ -543,7 +543,7 @@ QGroupBox::title {
       <string notr="true"/>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>7</number>
      </property>
      <widget class="QWidget" name="tabChannel0">
       <attribute name="title">
@@ -632,12 +632,21 @@ QGroupBox::title {
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QLineEdit" name="ledThresholdCh0Input">
-         <property name="text">
-          <string>500</string>
-         </property>
+        <widget class="QSpinBox" name="ledThresholdCh0Input">
          <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::PlusMinus</enum>
+         </property>
+         <property name="text" stdset="0">
+          <string>1000</string>
+         </property>
+         <property name="maximum">
+          <number>70000</number>
+         </property>
+         <property name="value">
+          <number>1000</number>
          </property>
         </widget>
        </item>
@@ -727,12 +736,21 @@ QGroupBox::title {
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QLineEdit" name="ledThresholdCh1Input">
-         <property name="text">
-          <string>500</string>
-         </property>
+        <widget class="QSpinBox" name="ledThresholdCh1Input">
          <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::PlusMinus</enum>
+         </property>
+         <property name="text" stdset="0">
+          <string>1000</string>
+         </property>
+         <property name="maximum">
+          <number>70000</number>
+         </property>
+         <property name="value">
+          <number>1000</number>
          </property>
         </widget>
        </item>
@@ -866,12 +884,21 @@ QGroupBox::title {
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QLineEdit" name="ledThresholdCh2Input">
-         <property name="text">
-          <string>500</string>
-         </property>
+        <widget class="QSpinBox" name="ledThresholdCh2Input">
          <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::PlusMinus</enum>
+         </property>
+         <property name="text" stdset="0">
+          <string>1000</string>
+         </property>
+         <property name="maximum">
+          <number>70000</number>
+         </property>
+         <property name="value">
+          <number>1000</number>
          </property>
         </widget>
        </item>
@@ -1005,12 +1032,21 @@ QGroupBox::title {
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QLineEdit" name="ledThresholdCh3Input">
-         <property name="text">
-          <string>500</string>
-         </property>
+        <widget class="QSpinBox" name="ledThresholdCh3Input">
          <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::PlusMinus</enum>
+         </property>
+         <property name="text" stdset="0">
+          <string>1000</string>
+         </property>
+         <property name="maximum">
+          <number>70000</number>
+         </property>
+         <property name="value">
+          <number>1000</number>
          </property>
         </widget>
        </item>
@@ -1144,12 +1180,21 @@ QGroupBox::title {
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QLineEdit" name="ledThresholdCh4Input">
-         <property name="text">
-          <string>500</string>
-         </property>
+        <widget class="QSpinBox" name="ledThresholdCh4Input">
          <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::PlusMinus</enum>
+         </property>
+         <property name="text" stdset="0">
+          <string>1000</string>
+         </property>
+         <property name="maximum">
+          <number>70000</number>
+         </property>
+         <property name="value">
+          <number>1000</number>
          </property>
         </widget>
        </item>
@@ -1283,12 +1328,21 @@ QGroupBox::title {
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QLineEdit" name="ledThresholdCh5Input">
-         <property name="text">
-          <string>500</string>
-         </property>
+        <widget class="QSpinBox" name="ledThresholdCh5Input">
          <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::PlusMinus</enum>
+         </property>
+         <property name="text" stdset="0">
+          <string>1000</string>
+         </property>
+         <property name="maximum">
+          <number>70000</number>
+         </property>
+         <property name="value">
+          <number>1000</number>
          </property>
         </widget>
        </item>
@@ -1422,12 +1476,21 @@ QGroupBox::title {
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QLineEdit" name="ledThresholdCh6Input">
-         <property name="text">
-          <string>500</string>
-         </property>
+        <widget class="QSpinBox" name="ledThresholdCh6Input">
          <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::PlusMinus</enum>
+         </property>
+         <property name="text" stdset="0">
+          <string>1000</string>
+         </property>
+         <property name="maximum">
+          <number>70000</number>
+         </property>
+         <property name="value">
+          <number>1000</number>
          </property>
         </widget>
        </item>
@@ -1561,12 +1624,21 @@ QGroupBox::title {
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QLineEdit" name="ledThresholdCh7Input">
-         <property name="text">
-          <string>500</string>
-         </property>
+        <widget class="QSpinBox" name="ledThresholdCh7Input">
          <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::PlusMinus</enum>
+         </property>
+         <property name="text" stdset="0">
+          <string>1000</string>
+         </property>
+         <property name="maximum">
+          <number>70000</number>
+         </property>
+         <property name="value">
+          <number>1000</number>
          </property>
         </widget>
        </item>
