@@ -1955,7 +1955,61 @@ QGroupBox::title {
      <height>25</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuHV">
+    <property name="title">
+     <string>HV</string>
+    </property>
+    <addaction name="actionShow_HV_Control"/>
+    <addaction name="actionClose_HV_Control"/>
+   </widget>
+   <widget class="QMenu" name="menuLog">
+    <property name="title">
+     <string>Log</string>
+    </property>
+    <addaction name="actionStart_Log"/>
+    <addaction name="actionStop_Log"/>
+   </widget>
+   <widget class="QMenu" name="menuTemp">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="title">
+     <string>Temp</string>
+    </property>
+    <addaction name="actionShow_Temp_NIY"/>
+   </widget>
+   <addaction name="menuHV"/>
+   <addaction name="menuTemp"/>
+   <addaction name="menuLog"/>
   </widget>
+  <action name="actionStart_Log">
+   <property name="text">
+    <string>Start Log</string>
+   </property>
+  </action>
+  <action name="actionStop_Log">
+   <property name="text">
+    <string>Stop Log</string>
+   </property>
+  </action>
+  <action name="actionShow_HV_Control">
+   <property name="text">
+    <string>Show HV Control</string>
+   </property>
+  </action>
+  <action name="actionClose_HV_Control">
+   <property name="text">
+    <string>Close HV Control</string>
+   </property>
+  </action>
+  <action name="actionShow_Temp_NIY">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show Temp (NIY)</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

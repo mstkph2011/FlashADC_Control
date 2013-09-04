@@ -16,12 +16,17 @@ SOURCES += main.cpp\
 				mainwindow.cpp \
 		tcp_server.cpp \
 		tcp_client.cpp \
-		tcp_object.cpp
+		tcp_object.cpp \
+    caen_hv_control.cpp \
+    hv_control_window.cpp
 
 HEADERS  += mainwindow.h \
 		tcp_server.h \
 		tcp_client.h \
-		tcp_object.h
+		tcp_object.h \
+    caen_hv_control.h \
+    hv_control_window.h
 
 FORMS    += \
-		mainwindow.ui
+		mainwindow.ui \
+    hv_control_window.ui
