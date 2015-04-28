@@ -3,6 +3,8 @@
 
 #include <QObject>
 
+
+
 class CAEN_HV_Control : public QObject
 {
 	Q_OBJECT
@@ -11,7 +13,11 @@ public:
 	
 signals:
 	
+private:
+    int handle;
 public slots:
+
+    int             Connect(char* ip,  char* Name_ext = "panda", char* Password_ext = "panda", int Systemtype = 1, int Linktype = 0);
 	
 };
 

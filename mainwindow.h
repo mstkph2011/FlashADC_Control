@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-
+#include "hv_control_window.h"
 class TCP_client;
 class TCP_server;
 
@@ -24,6 +24,8 @@ public:
 	void								ExtractReceivedData();
 private:
 	Ui::MainWindow *ui;
+
+	HV_Control_window			*HVControlWindow;
 
 	TCP_client					*Client;
 	TCP_server					*Server;
@@ -60,21 +62,19 @@ private:
 
 public slots:
 
+	//open HV control window
+	void								OpenHVControlWindow();
+	//client stuff
 	void								Connect();										//connect to server
-	void								Disconnect();									//disconnect from server
-	void								Connected();									//is called when successfully connected
-	void								SetErrorStatus(QString StatusString);				// is called when not connected
-
+	void								Disconnect();									//disconnect from server	
 	void								SetIP();											// set IP for client to connect to
 	void								SetPort();										// set Port for client to connect to
-
-
-
+	void								Connected();									//is called when successfully connected
+	void								SetErrorStatus(QString StatusString);				// is called when connection error occures
+	void								ComposeAndSendParameters();
 	void								ShowOutput();
 
 
-
-	void								ComposeAndSendParameters();
 
 	//server stuff
 	void								EnableServerControls(int state);

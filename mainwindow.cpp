@@ -7,7 +7,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <iostream>
 
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
@@ -19,8 +19,10 @@ MainWindow::MainWindow(QWidget *parent) :
 	SetParameter();
 	Client = new TCP_client(ui->ledIP->text(),ui->ledPort->text().toInt());
 	Server = new TCP_server(ui->ledIPServer->text(),ui->ledPortServer->text().toInt());
+    HVControlWindow = 0;
 
-
+	//open HV control window by pressing menu button
+	connect(ui->actionShow_HV_Control,SIGNAL(triggered()),this, SLOT(OpenHVControlWindow()));
 	//client stuff
 		// connect/disconnect buttons
 	connect(ui->btnConnect, SIGNAL(clicked()), this, SLOT(Connect()));								// connect client
@@ -54,7 +56,29 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+	delete Client;
+	delete Server;
+	delete HVControlWindow;
 	delete ui;
+}
+
+//open HV control window
+void MainWindow::OpenHVControlWindow()
+{
+
+    if (!HVControlWindow)
+        HVControlWindow = new HV_Control_window(this);
+    if (HVControlWindow)
+    {
+        HVControlWindow->show();
+
+        HVControlWindow->raise();
+    }
+    else
+    {
+        std::cout <<"bla1212"<<std::endl;
+    }
+
 }
 
 //client stuff
@@ -81,7 +105,6 @@ void MainWindow::Disconnect()			//disconnect client, also shows disconnected sta
 void MainWindow::SetIP()					//set ip to connect to
 {
 	Client->SetIP(ui->ledIP->text());
-
 }
 
 void MainWindow::SetPort()				//set port to connect to
