@@ -6,12 +6,8 @@
 #include "QMessageBox"
 #include <QDateTime>
 
-#include <qapplication.h>
-#include <qwt_plot.h>
-#include <qwt_plot_curve.h>
-#include <qwt_plot_grid.h>
-#include <qwt_symbol.h>
-#include <qwt_legend.h>
+//#include <qapplication.h>
+
 
 #include"Sleeper.h"
 
@@ -78,14 +74,16 @@ HV_Control_window::HV_Control_window(QWidget *parent) :
 
 
     ui->qwtPlotHV->setTitle("Ge HV");
+    MonitorCurve = new QwtPlotCurve();
+    QwtSymbol *symbol = new QwtSymbol( QwtSymbol::Ellipse,
+        QBrush( Qt::green ), QPen( Qt::green, 1 ), QSize(4, 4 ) );
+    MonitorCurve->setSymbol( symbol );
+    MonitorCurve->attach( ui->qwtPlotHV );
 }
 
 HV_Control_window::~HV_Control_window()
 {
-    MonitorTimer->stop();
-    LogFile->close();
-    delete LogFile;
-	delete ui;
+
 }
 
 void HV_Control_window::EnableSetupControls(int state)			// enable/disable server controls in ui
@@ -394,15 +392,23 @@ void HV_Control_window::MonitoringLoop()
     MeasureValuesGe();
     MeasureValuesNaI();
     QDateTime TimeStamp(QDateTime::currentDateTime());
-    cout << TimeStamp.toTime_t()<<endl;
-
+    cout << MonitorCounter<<endl;
+    if (VectorX.size() > 10)
+    {
+        VectorX.remove(0);
+        VectorY.remove(0);
+    }
+    VectorX.push_back(TimeStamp.toTime_t());
+    VectorY.push_back(VMonGe);
+    MonitorCurve->setSamples(VectorX,VectorY);
     *OutStream << TimeStamp.toTime_t() << "\t"<< VMonGe << "\t" << IMonGe << "\t"<< VMonNaI << "\t" << IMonNaI << "\n";
+    MonitorCounter++;
 }
 void HV_Control_window::StartMonitoring()
 {
     if (isConnected)
     {
-        LogFile = new QFile("text.txt");
+        LogFile = new QFile("HVLog.txt");
         OutStream = new QTextStream(LogFile);
         LogFile->open(QIODevice::WriteOnly | QIODevice::Append);
         //cout <<ui->spBLoggingTime->text().toInt()<<endl;
@@ -410,6 +416,7 @@ void HV_Control_window::StartMonitoring()
         ui->butStartLog->setEnabled(false);
         ui->butStopLog->setEnabled(true);
         isMonitoring=1;
+        MonitorCounter=1;
     }
     else
         ShowNotConnectedError();
